@@ -20,7 +20,8 @@ O "Desafio das Casas" é um jogo interativo desenvolvido para ajudar usuários a
 - **ARIA**: Técnicas e atributos ARIA são utilizados para melhorar a acessibilidade e a experiência de usuários com necessidades especiais.
 
 ## Como Jogar
-
+Link:
+https://joaovictorf01.github.io
 1. **Acesso ao Jogo**: O jogo pode ser acessado via navegador compatível com as tecnologias web modernas.
 2. **Iniciar o Jogo**: O usuário deve começar inserindo seu nome para personalizar a experiência.
 3. **Jogar**: Após o início, o jogo apresentará uma casa aleatória e o jogador deve selecionar se a casa é branca ou preta.
