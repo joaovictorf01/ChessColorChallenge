@@ -1,0 +1,9 @@
+<div class="game-board-container">
+    <h2>Qual a cor da casa {{ currentSquare }}?</h2>
+    <button (click)="checkAnswer('Branco')">Branco</button>
+    <button (click)="checkAnswer('Preto')">Preto</button>
+    <!-- Mensagem de feedback com ARIA Live Region -->
+    <p aria-live="polite">{{ lastAnswerMessage }}</p>
+    <p>Pontuação: {{ score }}</p>
+    <button (click)="exitGame()">Sair do Jogo</button>
+</div>
