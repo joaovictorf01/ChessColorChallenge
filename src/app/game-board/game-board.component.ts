@@ -1,23 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild, AfterViewInit } from '@angular/core';
+import { CommonModule } from '@angular/common';  // Importe CommonModule
 import { Router } from '@angular/router';
+import { ScoreService } from '../score.service';
 import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-game-board',
   templateUrl: './game-board.component.html',
   styleUrls: ['./game-board.component.css'],
-  standalone: true
+  standalone: true,
+  imports: [CommonModule]  // Adicione CommonModule aos imports
 })
-export class GameBoardComponent {
-  currentSquare: string = '';
+export class GameBoardComponent implements AfterViewInit {
+currentSquare: string = '';
   squareColor: string = '';
-  score: number = 0;
   lastAnswerMessage: string = '';
-  userName: string = ''; // Este valor será obtido do serviço
+  userName: string = '';
+  showAlert: boolean = false;  // Controla a visibilidade do alerta
 
-  constructor(private userService: UserService, private router: Router) {
+  @ViewChild('question', { static: false }) questionElement!: ElementRef<HTMLHeadingElement>;
+
+  constructor(
+    private userService: UserService, 
+    public  scoreService: ScoreService, 
+    private router: Router
+  ) {
     this.userName = this.userService.getUserName();
     this.generateAndSetRandomSquare();
+  }
+
+  ngAfterViewInit() {
+    this.setFocusToQuestion();
   }
 
   generateAndSetRandomSquare(): void {
@@ -43,20 +56,28 @@ export class GameBoardComponent {
 
   checkAnswer(userGuess: string): void {
     const correct = userGuess === this.squareColor;
-    this.updateScoreAndFeedback(correct);
-    this.generateAndSetRandomSquare(); // Gera uma nova casa após cada resposta
-  }
-
-  updateScoreAndFeedback(correct: boolean): void {
     if (correct) {
-      this.score++;
       this.lastAnswerMessage = `Parabéns, ${this.userName}, você acertou!`;
+      this.scoreService.incrementCorrect();
     } else {
       this.lastAnswerMessage = `Que pena, ${this.userName}, você errou.`;
+      this.scoreService.incrementIncorrect();
+    }
+    this.showAlert = true;  // Mostrar alerta
+    setTimeout(() => {
+      this.showAlert = false;  // Esconder alerta
+      this.setFocusToQuestion();
+    }, 300);  // A mensagem de alerta desaparece após 3000 ms
+    this.generateAndSetRandomSquare();
+  }
+
+  setFocusToQuestion(): void {
+    if (this.questionElement && this.questionElement.nativeElement) {
+      this.questionElement.nativeElement.focus();
     }
   }
 
   exitGame(): void {
-    this.router.navigate(['/']); // Navega de volta à tela intro ou para outra tela conforme desejado
+    this.router.navigate(['/']); // Navigate back to intro or another screen as desired
   }
 }

@@ -1,9 +1,13 @@
 <div class="game-board-container">
-    <h2>Qual a cor da casa {{ currentSquare }}?</h2>
-    <button (click)="checkAnswer('Branco')">Branco</button>
-    <button (click)="checkAnswer('Preto')">Preto</button>
-    <!-- Mensagem de feedback com ARIA Live Region -->
-    <p aria-live="polite">{{ lastAnswerMessage }}</p>
-    <p>Pontuação: {{ score }}</p>
-    <button (click)="exitGame()">Sair do Jogo</button>
+  <h2 id="question" #question tabindex="-1">Qual a cor da casa {{ currentSquare }}?</h2>
+  <button (click)="checkAnswer('Branco')">Branco</button>
+  <button (click)="checkAnswer('Preto')">Preto</button>
+  <!-- Área de alerta para mensagens de acerto ou erro -->
+  <div *ngIf="showAlert" class="alert" role="alert">
+    {{ lastAnswerMessage }}
+  </div>
+  <!-- Pontuação e erros detalhados -->
+  <h3>Pontuação: {{ scoreService.getScore() }}</h3>
+  <p>Erros: {{ scoreService.getStatistics().incorrect }}</p>
+  <button (click)="exitGame()">Sair do Jogo</button>
 </div>
